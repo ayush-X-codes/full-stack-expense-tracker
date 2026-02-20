@@ -19,6 +19,7 @@
 }
 
 .reg-heading {
+    font-family: "Inter", sans-serif;
     color: blue;
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
@@ -33,12 +34,14 @@
 }
 
 label {
+   
     font-weight: 500;
     font-size: 0.9rem;
     color: #374151;
 }
 
 .user-info {
+     
     padding: 10px 12px;
     border-radius: 8px;
     outline: none;
