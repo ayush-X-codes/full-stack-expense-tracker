@@ -34,9 +34,9 @@ async function getDashboardOverview(req, res) {
 async function getFilteredTransactionByDate(req, res) {
   try {
     const userId = req.user.userId;
-    console.log(userId)
+
     const { range, startDate, endDate, categoryId, type } = req.query;
-    console.log("range: ", range)
+
     let calculateStartDate;
     let calculateEndDate;
 

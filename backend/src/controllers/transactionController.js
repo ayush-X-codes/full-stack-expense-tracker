@@ -31,8 +31,10 @@ async function addTransaction(req, res) {
 }
 
 async function getAllTransactions(req, res) {
+  console.log("request comes...")
   try {
     const userId = req.user.userId;
+    console.log("user id is: ", userId)
 
     const userTransactions = await getUserTransactions(userId);
 
