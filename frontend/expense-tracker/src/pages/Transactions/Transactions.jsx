@@ -1,162 +1,91 @@
 import React from "react";
 import "./Transactions.css";
-import { useState } from "react";
-import { useEffect } from "react";
+import { MoveLeft } from "lucide-react";
 
 const Transactions = () => {
-  const [transactions, setTransactions] = useState([]);
-  const [totalIncome, setTotalIncome] = useState(null);
-  const [totalExpensne, setTotalExpensne] = useState(null);
-  const [totalBalance, setTotalBalance] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    fetchTransactions();
-    fetchOveriew();
-  }, []);
-
-  const fetchTransactions = async () => {
-    console.log("useEffect runs");
-    try {
-      setLoading(true);
-      setError("");
-
-      const res = await fetch("/api/v1/transactions");
-      const data = await res.json();
-      console.log("transactions are: ", data);
-
-      console.log("request method: ", res.status);
-
-      if (!res.ok) {
-        return setError(data.error || "failed to load transactions");
-      }
-
-      setTransactions(data.transactions);
-    } catch (error) {
-      setError("Network error. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchOveriew = async () => {
-    console.log("useEffect runs");
-    try {
-      setError("");
-
-      const res = await fetch("/api/v1/dashboard/summary");
-      const data = await res.json();
-      console.log("dashboard overview: ", data);
-
-      console.log("request method: ", res.status);
-
-      if (!res.ok) {
-        return setError(data.error || "failed to load transactions");
-      }
-
-      setTotalIncome(data.data.totlaInocme);
-      setTotalExpensne(data.data.totalExpesnes);
-      setTotalBalance(data.data.balance);
-    } catch (error) {
-      setError("Network error. Please try again.");
-    }
-  };
-
   return (
-    <div className="tra-wrapper">
-      <header className="tra-header">
-        <nav className="tra-nav">
-          <div>☰</div>
-          <span>Transactions</span>
-          <div>🔔</div>
-        </nav>
-        <p className="tra-date">Feb 20, 2026</p>
-      </header>
-      <main className="tra-main">
-        <div className="tra-balance">
-          <h2 className="tra-heading-balance">💰 Total Balance</h2>
-          <p className="tra-balance-amount">${totalBalance}</p>
-          <p className="tra-balance-label">This month</p>
+    <div className="add" id="add">
+      <div className="wrapper-transaction">
+        <div className="entry">
+          <div className="backword-arrow">
+            ←
+          </div>
+          <span className="entry-heading">New Entery</span>
         </div>
 
-        <div className="tra-grid">
-          <div className="tra-grid-col">
-            <h2 className="tra-heading-income">📈 Money In </h2>
-            <p className="tra-income-amount">+${totalIncome}</p>
-            <p className="tra-income-label">This month</p>
+        <div className="form">
+          <div className="amount-box">
+
+            <label htmlFor="amount" className="amount-label">AMOUNT</label>
+            <div className="amount-input-box">
+              <span className="amount-text">$</span>
+              <input type="number" className="amount-input" value={24} step={0.01} min={0} />
+              <span className="amount-text">.00</span>
+            </div>
+            <div className="amount-category">
+              <div className="amount-exp amount-cate-item">- Expense</div>
+              <div className="amount-inc amount-cate-item">+ Income</div>
+            </div>
           </div>
 
-          <div className="tra-grid-col">
-            <h2 className="tra-heading-expense"> 📉 Money Out</h2>
-            <p className="tra-expense-amount">-${totalExpensne}</p>
-            <p className="tra-expense-label">This month</p>
+          <label htmlFor="name" className="name-label label">NAME</label>
+          <input
+            type="text"
+            value={"Morning coffee"}
+            placeholder="e.g. Morning coffee"
+            className="name-input user-input"
+          />
+
+
+          <label htmlFor="categories" className="label">CATEGORY</label>
+          <select className="user-input">
+            <option value="food">☕ Food & Drink</option>
+            <option value="shop">🛍️ Shopping</option>
+            <option value="travel">🚇 Travel</option>
+            <option value="home">🏠 Home</option>
+            <option value="coffee">💊 Health</option>
+            <option value="coffee">🎬 Entertainment</option>
+            <option value="coffee">📦 Other</option>
+          </select>
+
+          <label htmlFor="date" className="label">DATE</label>
+          <input type="date" placeholder="05-03-2026" className="date-input user-input" />
+
+
+          <label htmlFor="feeling" className="label">HOW DID THIS FEEL</label>
+          <div className="user-mood">
+            <div className="mood-item mood-item-one">
+              😌
+              <span>Calm</span>
+            </div>
+            <div className="mood-item">
+              😅
+              <span>Guilty</span>
+            </div>
+            <div className="mood-item">
+              😊
+              <span>Happy</span>
+            </div>
+            <div className="mood-item">
+              😐
+              <span>Neutral</span>
+            </div>
           </div>
+
+          <label htmlFor="reflect" className="label">YOUR REFLECTION (optional)</label>
+          <textarea className="user-input reflect-input" placeholder="How did this feel? Any patterns you notice?"></textarea>
+          <p className="reflect-para">Patterns emerge when you reflect honestly</p>
         </div>
 
-        <div className="tra-filter">
-          <div className="search-box">
-            <input
-              type="search"
-              placeholder="Search transactions..."
-              className="tra-search-box"
-            />
-          </div>
-          <div className="tra-dropdown-filter">
-            <div>
-              <label>Date</label>
-              <select name="byMonth" id="month-filter">
-                <option value="month"></option>
-              </select>
-            </div>
-            <div>
-              <label>Type</label>
-              <select name="type" id="type-filter">
-                <option value="type"></option>
-              </select>
-            </div>
-            <div>
-              <label>Category</label>
-              <select name="category" id="category-filter">
-                <option value="category"></option>
-              </select>
-            </div>
-          </div>
-        </div>
 
-        <div>
-          <h3>Transactions</h3>
-          {transactions.length === 0 ? (
-            <div className="tra-empty">
-              <p>No transactions yet</p>
-              <p className="tra-empty-sub">
-                Add your first transaction to get started
-              </p>
-              <button className="tra-add-btn">+ Add transaction</button>
-            </div>
-          ) : (
-            transactions.map((transaction) => (
-              <div className="tra-card" key={transaction.id}>
-                <div className="tra-card-top">
-                  <span className="tra-card-description">
-                    {transaction.description}
-                  </span>
-                  <span className="tra-card-amount">{transaction.amount}</span>
-                </div>
-                <div className="tra-card-bottom">
-                  <span className="tra-card-meta">
-                    {transaction.category_name} ·{" "}
-                    {transaction.date.split("T")[0]}
-                  </span>
-                  <span className="tra-card-type">{transaction.type}</span>
-                </div>
-              </div>
-            ))
-          )}
+      </div>
+        <div className="footer-btn">
+          <button className="btn-add"><span>✦</span>Add transaction</button>
         </div>
-      </main>
     </div>
   );
 };
 
 export default Transactions;
+
+// a complete guide from  inspiration to building design and which tools to use and how to use cluade for any website design
