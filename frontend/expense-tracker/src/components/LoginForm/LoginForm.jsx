@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import "./LoginForm.css";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [email, setEmail] = useState();
@@ -8,6 +9,7 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const [success, setSuccess] = useState();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     try {
@@ -38,6 +40,7 @@ const LoginForm = () => {
       setSuccess("Login successfully!");
       setEmail("");
       setPassword("");
+      navigate("/transactions");
     } catch (error) {
       setError("Network error. Please try again.");
     } finally {
@@ -46,39 +49,60 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="log-wrapper">
-      <div className="log-card">
-        <h1 className="log-heading">Log In</h1>
-        {error && <p className="msg error">{error}</p>}
-        {success && <p className="msg success">{success}</p>}
-        <form className="log-form" onSubmit={handleSubmit}>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            className="log-user-info"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+    <div className="login">
+      <div className="log-wrapper">
+        <div className="header">
+          <div className="logo">🌸</div>
+          <span className="logo-name">camellia.</span>
+          <span className="header-greet">Welcome back</span>
+        </div>
 
-          <label htmlFor="name">Password</label>
-          <input
-            type="password"
-            id="password"
-            className="log-user-info"
-            placeholder="Create a password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+        <div className="start-login">
+          <h2 className="login-greet">
+            Good to see
+            <br />
+            you again.
+          </h2>
+          <span className="login-text">Sign in to continue your journey.</span>
+        </div>
 
-          <button className="log-btn" disabled={loading}>
-            {loading ? "Loggin in" : "Log in"}
-          </button>
-        </form>
-        <p className="link-reg">
-          Don't have an account <a href="/login">Register</a>
-        </p>
+        <div className="log-card">
+          {error && <p className="msg error">{error}</p>}
+          {success && <p className="msg success">{success}</p>}
+          <form className="log-form" onSubmit={handleSubmit}>
+            <label htmlFor="email" className="label-input">
+              EMAIL
+            </label>
+            <input
+              type="email"
+              id="email"
+              className="log-input"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <label htmlFor="name" className="label-input">
+              PASSWORD
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="log-input"
+              placeholder="Your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <button className="log-btn" disabled={loading}>
+              <span>✦</span>
+              {loading ? "Loggin in" : "Sign in"}
+            </button>
+          </form>
+        </div>
+      </div>
+      <div className="link-reg">
+        New here? <a href="/register">Create a account</a>
       </div>
     </div>
   );
