@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import "./RegisterForm.css";
+import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
   const [name, setName] = useState();
@@ -9,6 +10,7 @@ const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const [success, setSuccess] = useState();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     try {
@@ -39,6 +41,7 @@ const RegisterForm = () => {
       setName("");
       setEmail("");
       setPassword("");
+      useNavigate("/login");
     } catch (error) {
       setError("Network error. Please try again.");
     } finally {
@@ -47,50 +50,64 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="reg-wrapper">
-      <div className="reg-card">
-        <h1 className="reg-heading">Sign Up</h1>
-        {error && <p className="msg error">{error}</p>}
-        {success && <p className="msg success">{success}</p>}
-        <form className="reg-form" onSubmit={handleSubmit}>
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            id="name"
-            className="user-info"
-            placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+    <div className="register">
+      <div className="reg-wrapper">
+        <div className="reg-header">
+          <h1 className="log-heading">
+            Let's start with <br /> the basics.
+          </h1>
+          <p className="log-para">No pressure. Just you and your finances.</p>
+        </div>
+        <div className="reg-card">
+          {error && <p className="msg error">{error}</p>}
+          {success && <p className="msg success">{success}</p>}
+          <form className="reg-form" onSubmit={handleSubmit}>
+            <label htmlFor="name" className="label-input">
+              YOUR NAME
+            </label>
+            <input
+              type="text"
+              id="name"
+              className="user-info"
+              placeholder="How should we call you"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
 
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            className="user-info"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+            <label htmlFor="email" className="label-input">
+              EMAIL
+            </label>
+            <input
+              type="email"
+              id="email"
+              className="user-info"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-          <label htmlFor="name">Password</label>
-          <input
-            type="password"
-            id="password"
-            className="user-info"
-            placeholder="Create a password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+            <label htmlFor="name" className="label-input">
+              PASSWORD
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="user-info"
+              placeholder="Create a password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-          <button className="reg-btn" disabled={loading}>
-            {loading ? "Signing up" : "Sign up"}
-          </button>
-        </form>
-        <p className="link-login">
-          Already have an account <a href="/login">Log In</a>
-        </p>
+            <button className="reg-btn" disabled={loading}>
+              <span>✦</span>
+              {loading ? "Signing up" : "Create my account"}
+            </button>
+          </form>
+        </div>
       </div>
+      <p className="link-login">
+        Already have an account <a href="/login">Sign In</a>
+      </p>
     </div>
   );
 };
